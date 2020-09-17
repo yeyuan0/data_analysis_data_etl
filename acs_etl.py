@@ -43,12 +43,14 @@ variables = {'B02001_001E': 'total_population',
              'C24050_004E': 'manufacturing_employed',
              'C24050_007E': 'transportation_warehousing_utilities_employed'
             }
-data = get_data_in_state(variables, state='36', county='*', block='*', data_type='acs5', year=2018)
 
-data['State'] = [data.index[i].params()[0][1] for i in range(data.shape[0])]
-data['County'] = [data.index[i].params()[1][1] for i in range(data.shape[0])]
-data['Tract'] = [data.index[i].params()[2][1] for i in range(data.shape[0])]
-data['BlockGroup'] = [data.index[i].params()[3][1] for i in range(data.shape[0])]
-data.reset_index(drop=True, inplace=True)
-
-data.to_csv('acs_data_yeyuan2.csv')
+if __name__ == '__main__':
+    data = get_data_in_state(variables, state='36', county='*', block='*', data_type='acs5', year=2018)
+    
+    data['State'] = [data.index[i].params()[0][1] for i in range(data.shape[0])]
+    data['County'] = [data.index[i].params()[1][1] for i in range(data.shape[0])]
+    data['Tract'] = [data.index[i].params()[2][1] for i in range(data.shape[0])]
+    data['BlockGroup'] = [data.index[i].params()[3][1] for i in range(data.shape[0])]
+    data.reset_index(drop=True, inplace=True)
+    
+    data.to_csv('acs_data_yeyuan2.csv')
