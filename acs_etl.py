@@ -4,7 +4,7 @@ def get_data_in_state(variables, state='36', county='*', block='*', data_type='a
     if block:
         datas = []
         geos = censusdata.geographies(censusdata.censusgeo([('state', state),('county', county)]), 'acs5', 2015)
-        for geo in list(geos.values())[:3]:
+        for geo in list(geos.values()):
             cur_data = censusdata.download(
                     data_type, year,
                     censusdata.censusgeo([('state', state), ('county', geo.params()[1][1]), ('block group', block)]),
@@ -45,12 +45,13 @@ variables = {'B02001_001E': 'total_population',
             }
 
 if __name__ == '__main__':
-    data = get_data_in_state(variables, state='36', county='*', block='*', data_type='acs5', year=2018)
-    
+    data = get_data_in_state(variables, state='36', county='*', block='*', data_type='acs5', year=2015)
+
     data['State'] = [data.index[i].params()[0][1] for i in range(data.shape[0])]
     data['County'] = [data.index[i].params()[1][1] for i in range(data.shape[0])]
     data['Tract'] = [data.index[i].params()[2][1] for i in range(data.shape[0])]
     data['BlockGroup'] = [data.index[i].params()[3][1] for i in range(data.shape[0])]
+    data.dropna(axis=1, how='all', inplace=True)
     data.reset_index(drop=True, inplace=True)
     
-    data.to_csv('acs_data_yeyuan2.csv')
+    data.to_csv('acs_data_yeyuan2.csv', index=False)
